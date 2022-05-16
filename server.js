@@ -25,7 +25,6 @@ app.post('/Add',function(req,res){
         
         obj.push(req.body)
         var ans = JSON.stringify(obj);
-        console.log("ans is ",ans);
         fs.writeFileSync(__dirname + "/" + "infos.json",ans); 
         
      });
@@ -43,9 +42,7 @@ app.post('/Edit',function(req,res){
         //var newobj = obj.filter((value, index, array)=>{value.id != targetID});
         var newobj = [];
         for(const x of obj){
-            if(x.id != targetID){
-                newobj.push(x);
-            }else{
+            if(x.id == targetID){
                 if(req.body['name'].length > 0){
                     x['name'] = req.body['name']
                 }
@@ -55,12 +52,10 @@ app.post('/Edit',function(req,res){
                 if(req.body['cnt'].length> 0 ){
                     x['cnt'] = req.body['cnt']
                 }
-                newobj.push(x);
             }
+            newobj.push(x);
         }
-        console.log("newobj is ",newobj);
         var ans = JSON.stringify(newobj);
-        console.log("ans is ",ans);
 
         fs.writeFileSync(__dirname + "/" + "infos.json",ans); 
         
