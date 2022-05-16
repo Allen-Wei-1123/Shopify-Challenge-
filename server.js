@@ -103,7 +103,7 @@ function SearchAndDelete(fileobj,targetID, targetCnt){
     for(const x of fileobj){
         if(x['id'] == targetID && parseInt(x['cnt']) >= targetCnt){
             var tmp = parseInt(x['cnt']) - targetCnt;
-            x['cnt'] = ""+tmp;
+            x['cnt'] = toString(tmp);
             break;
         }
     }

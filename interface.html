@@ -102,9 +102,10 @@
                     </div>
                     <div id = "IDWindow">
                         <label for="Item3">Count:</label>
-                        <input type="number" id="Item3Cnt" name="Item3Cnt"><br><br>
+                        <input type="number" id="Item3Cnt" name="Item3Cnt" ><br><br>
                     </div>
                 </div>
+               
                 <input type="button" value="Submit" onclick="return Shipments()">
             </form>
         </div>
@@ -115,6 +116,10 @@
             var itemName = document.getElementById("AddItemName").value;  
             var priceVal = document.getElementById("AddPrice").value;
             var cntItem = document.getElementById("NumOfItems").value;
+            if(itemName.length == 0 || priceVal.length == 0 || cntItem.length == 0){
+                window.alert("Empty value")
+                return;
+            }
             var obj = {
                 id: Math.floor(Math.random() * 100),
                 name:itemName,
@@ -177,13 +182,17 @@
         function Shipments(){
             var item1ID = document.getElementById("Item1").value;
             var item1Cnt = document.getElementById("Item1Cnt").value;
+           
 
             var item2ID = document.getElementById("Item2").value;
             var item2Cnt = document.getElementById("Item2Cnt").value;
 
+            
+
             var item3ID = document.getElementById("Item3").value;
             var item3Cnt = document.getElementById("Item3Cnt").value;
 
+         
             const obj = {
                 item1ID : item1ID,
                 item1Cnt:item1Cnt,
