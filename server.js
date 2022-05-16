@@ -99,11 +99,14 @@ app.get('/', (req, res)=> {
 })
 
 function SearchAndDelete(fileobj,targetID, targetCnt){
+    if(targetID.length == 0)return fileobj; 
     targetCnt = parseInt(targetCnt);
     for(const x of fileobj){
-        if(x['id'] == targetID && parseInt(x['cnt']) >= targetCnt){
+        if(x['id'] == parseInt(targetID) && parseInt(x['cnt']) >= targetCnt){
+            console.log("equals")
             var tmp = parseInt(x['cnt']) - targetCnt;
-            x['cnt'] = toString(tmp);
+            console.log(typeof(tmp))
+            x['cnt'] = tmp.toString();
             break;
         }
     }
@@ -117,9 +120,12 @@ app.post('/Shipment',(req,res)=>{
         // res.end( data );
         
         var fileobj = JSON.parse(data); 
+        console.log("fileobj", fileobj);
         var getobj = req.body;
+        console.log("getobj",getobj);
 
         var tmpfileobj = SearchAndDelete(fileobj,getobj['item1ID'],getobj['item1Cnt'])
+        console.log("ans",tmpfileobj);
         tmpfileobj = SearchAndDelete(tmpfileobj,getobj['item2ID'],getobj['item2Cnt'])
         tmpfileobj = SearchAndDelete(tmpfileobj,getobj['item3ID'],getobj['item3Cnt'])
 
