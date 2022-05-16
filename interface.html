@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./interface.css">
+      </head>
+<body>
+
+    <div class="parent">
+        <div class = "Add">
+            <h1>Create Items</h1>
+            <form id="AddForm">
+                <label for="AddItemName">Item name:</label>
+                <input type="text" id="AddItemName" name="AddItemName"><br><br>
+                <label for="AddPrice">Price:</label>
+                <input type="number" id="AddPrice" name="AddPrice"><br><br>
+                <label for="NumOfItems">Number of this item:</label>
+                <input type="number" id="NumOfItems" name="NumOfItems"><br><br>
+                <input type="button" value="Submit"  onclick="return AddFunction();">
+            </form>
+        </div>
+        <div class = "Edit">
+            <h1>Edit Items</h1>
+            <form >
+                <label for="IDVal">Item ID:</label>
+                <input type="text" id="IDVal" name="IDVal"><br><br>
+                <label for="EditItemName">Item name:</label>
+                <input type="text" id="EditItemName" name="EditItemName"><br><br>
+                <label for="EditPrice">Price:</label>
+                <input type="number" id="EditPrice" name="EditPrice"><br><br>
+                <label for="Count">Count:</label>
+                <input type="number" id="Count" name="Count"><br><br>
+                <input type="button" value="Submit" onclick="return EditFunction()">
+              </form>
+        </div>
+        <div class = "Items">
+            <h1>List Items</h1>
+            <table id = "itemTable">
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Count</th>
+                </tr>
+                <script>
+                        fetch('http://localhost:3000/')
+                        .then(response=>response.json())
+                        .then(data=> {
+                            for (const x of data){
+                                var table = document.getElementById("itemTable")
+                                var row = table.insertRow()
+
+                                var cell1 = row.insertCell(0);
+                                var cell2 = row.insertCell(1);
+                                var cell3 = row.insertCell(2)
+                                var cell4 = row.insertCell(3)
+
+                                cell1.innerHTML = x['id'];
+                                cell2.innerHTML = x['name'];
+                                cell3.innerHTML = x['price'];
+                                cell4.innerHTML = x['cnt']
+                                
+                            }
+            });
+                </script>
+              </table>
+        </div>
+        <div class = "Delete">
+            <h1>Delete</h1>
+            <form>
+                <label for="DeleteItemName">Item ID:</label>
+                <input type="text" id="DeleteItemName" name="DeleteItemName"><br><br>
+                <input type="button" value="Submit" onclick ="return DeleteItems()" >
+            </form>
+        </div>
+        <div class = "Shipments">
+            <h1>Shipments</h1>
+            <form>
+                <div id = "InputWindow">
+                    <div id = "IDWindow">
+                        <label for="Item1">Item1 ID:</label>
+                        <input type="text" id="Item1" name="Item1"><br><br>
+                    </div>
+                    <div id = "IDWindow">
+                        <label for="Item1Cnt">Count:</label>
+                        <input type="number" id="Item1Cnt" name="Item1Cnt"><br><br>
+                    </div>
+                </div>
+                <div id = "InputWindow">
+                    <div id = "IDWindow">
+                        <label for="Item2">Item2 ID:</label>
+                        <input type="text" id="Item2" name="Item2"><br><br>
+                    </div>
+                    <div id = "IDWindow">
+                        <label for="Item2">Count:</label>
+                        <input type="number" id="Item2Cnt" name="Item2Cnt"><br><br>
+                    </div>
+                </div>
+                <div id = "InputWindow">
+                    <div id = "IDWindow">
+                        <label for="Item3">Item3 ID:</label>
+                        <input type="text" id="Item3" name="Item3"><br><br>
+                    </div>
+                    <div id = "IDWindow">
+                        <label for="Item3">Count:</label>
+                        <input type="number" id="Item3Cnt" name="Item3Cnt"><br><br>
+                    </div>
+                </div>
+                <input type="button" value="Submit" onclick="return Shipments()">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function AddFunction(){
+            var itemName = document.getElementById("AddItemName").value;  
+            var priceVal = document.getElementById("AddPrice").value;
+            var cntItem = document.getElementById("NumOfItems").value;
+            var obj = {
+                id: Math.floor(Math.random() * 100),
+                name:itemName,
+                price: priceVal,
+                cnt: cntItem
+            }         
+            console.log("obj ",JSON.stringify(obj));
+            fetch('http://localhost:3000/Add', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(obj),
+                })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Success:', data);
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        function EditFunction(){
+            var itemID = document.getElementById("IDVal").value;
+            var itemName = document.getElementById("EditItemName").value;  
+            var priceVal = document.getElementById("EditPrice").value;
+            var cnt = document.getElementById("Count").value
+            var obj = {
+                id: itemID,
+                name:itemName,
+                price: priceVal,
+                cnt:cnt
+            }         
+            // console.log("obj ",JSON.stringify(obj));
+            fetch('http://localhost:3000/Edit', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(obj),
+                })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Success:', data);
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function DeleteItems(){
+            var id = document.getElementById("DeleteItemName").value;
+            fetch('http://localhost:3000/Delete/'+id, {
+            method: 'DELETE',
+            })
+            .then(res => res.text()) // or res.json()
+            .then(res => console.log(res))
+        }
+
+        function Shipments(){
+            var item1ID = document.getElementById("Item1").value;
+            var item1Cnt = document.getElementById("Item1Cnt").value;
+
+            var item2ID = document.getElementById("Item2").value;
+            var item2Cnt = document.getElementById("Item2Cnt").value;
+
+            var item3ID = document.getElementById("Item3").value;
+            var item3Cnt = document.getElementById("Item3Cnt").value;
+
+            const obj = {
+                item1ID : item1ID,
+                item1Cnt:item1Cnt,
+                item2ID: item2ID,
+                item2Cnt: item2Cnt,
+                item3ID:item3ID,
+                item3Cnt:item3Cnt
+            }
+
+            fetch('http://localhost:3000/Shipment', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(obj),
+                })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Success:', data);
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+            });
+
+
+        }
+        
+
+    </script>
+
+</body>
+</html>

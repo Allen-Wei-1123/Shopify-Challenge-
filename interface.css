@@ -1,0 +1,53 @@
+
+.parent{
+    height: 300px;
+    width: 100%;
+}
+
+.Add{
+    width: 33%;
+    height: 300px;
+    float: left;;
+    border-style: solid;
+    border: 1px solid black;
+}
+
+.Edit{
+    width: 33%;
+    height: 300px;
+    float: left;
+    border-style: solid;
+    border: 1px solid black;
+}
+
+.Items{
+    width: 32%;
+    height: 300px;
+    float: left;
+    border-style: solid;
+    border: 1px solid black;
+}
+
+.Delete{
+    width: 33%;
+    height: 300px;
+    float: left;
+    border-style: solid;
+    border: 1px solid black;
+}
+
+.Shipments{
+    width: 33%;
+    height: 300px;
+    float: left;
+    border-style: solid;
+    border: 1px solid black;
+}
+.Shipments #InputWindow{
+    width: 100%;
+    height: 40px;
+}
+
+.Shipments #IDWindow{
+    float: left;
+}
